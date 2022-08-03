@@ -90,3 +90,21 @@ def put_ingredient(ingredient_id):
     except Exception:
         error_message = "Something went wrong."
     return make_response(error_message, 400)
+
+
+@ingredient_blueprint.route("/ingredient/<int:ingredient_id>", methods=["DELETE"])
+def delete_ingredient(ingredient_id):
+    try:
+        session = Session()
+        ingredient_object = (
+            session.query(Ingredient).filter(Ingredient.id == ingredient_id).one()
+        )
+        session.delete(ingredient_object)
+        session.commit()
+        session.close()
+        return make_response("Ingredient has been deleted.", 204)
+    except NoResultFound:
+        error_message = "Ingredient does not exist."
+    except Exception:
+        error_message = "Something went wrong."
+    return make_response(error_message, 400)
