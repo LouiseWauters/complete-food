@@ -1,4 +1,5 @@
 from sqlalchemy import Column, String, Float, Date
+from marshmallow import Schema, fields
 
 from src.entities.entity import Base, Entity
 
@@ -15,10 +16,9 @@ class Ingredient(Entity, Base):
         self.name = name
         self.rating = rating
 
-    def to_json(self):
-        return {
-            "name": self.name,
-            "rating": self.rating,
-            "id": self.id,
-            "last_eaten": self.last_eaten,
-        }
+
+class IngredientSchema(Schema):
+    id = fields.Number()
+    name = fields.Str()
+    rating = fields.Float()
+    last_eaten = fields.Date()
