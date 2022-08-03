@@ -1,5 +1,5 @@
-from sqlalchemy import Column, String, Float, Date
 from marshmallow import Schema, fields
+from sqlalchemy import Column, String, Float, Date
 
 from src.entities.entity import Base, Entity
 
