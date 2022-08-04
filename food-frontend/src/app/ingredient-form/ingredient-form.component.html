@@ -45,30 +45,30 @@
           </div>
         </div>
 
-<!--        <div *ngIf="successMessage">-->
-<!--          <div class="field is-horizontal">-->
-<!--            <div class="field-label is-normal">-->
-<!--              <label class="label"></label>-->
-<!--            </div>-->
-<!--            <div class="field-body">-->
-<!--              <div class="field">-->
-<!--                <h6 class="title is-6" style="color: green">{{successMessage}}</h6>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
+        <div *ngIf="successMessage">
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label"></label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <h6 class="title is-6" style="color: green">{{successMessage}}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <button class="button is-primary is-pulled-right" type="submit">Submit</button>
       </form>
     </div>
 
-    <ng-template #noForm>
+<!--    <ng-template #noForm>-->
 <!--      <div *ngIf="errorMessage; else loading">-->
 <!--        {{errorMessage}}-->
 <!--      </div>-->
 <!--      <ng-template #loading>-->
 <!--        <app-load-spinner></app-load-spinner>-->
 <!--      </ng-template>-->
-    </ng-template>
+<!--    </ng-template>-->
   </div>
 </div>

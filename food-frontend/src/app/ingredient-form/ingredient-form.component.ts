@@ -4,6 +4,7 @@ import {Ingredient} from "../models/ingredient";
 import {outsideRangeValidator} from "../shared/outside-range-validator.directive";
 import {followRegexValidator} from "../shared/follow-regex-validator.directive";
 import {nonEmptyValidator} from "../shared/non-empty-validator.directive";
+import {IngredientService} from "../services/ingredient.service";
 
 @Component({
   selector: 'app-ingredient-form',
@@ -14,8 +15,11 @@ export class IngredientFormComponent implements OnInit {
 
   form!: FormGroup;
   errorMessage!: string | null;
+  successMessage!: string | null;
 
-  constructor() {
+  constructor(
+    private ingredientApi: IngredientService
+  ) {
   }
 
   ngOnInit(): void {
@@ -37,12 +41,22 @@ export class IngredientFormComponent implements OnInit {
     })
   }
 
-  submit(form: Ingredient) {
+  submit(newIngredient: Ingredient) {
     this.errorMessage = null;
+    this.successMessage = null;
     if(this.form.valid) {
-      console.log(form);
-      this.form.reset();
-      this.form.markAsPristine();
+      console.log(newIngredient);
+      this.ingredientApi.createIngredient(newIngredient)
+        .subscribe({
+          next: data => {
+            this.successMessage = `Successfully created ingredient ${data.name} with rating ${data.rating}.`;
+            this.form.reset();
+            this.form.markAsPristine();
+          },
+          error: error => {
+            this.errorMessage = error.error;
+          }
+        });
     } else {
       console.log(this.name?.errors);
       if (this.name?.errors?.['required']) {
