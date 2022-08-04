@@ -1,0 +1,74 @@
+<div class="section">
+  <div class="container">
+    <h1 class="title">New ingredient</h1>
+    <br>
+
+<!--    <div *ngIf="ready; else noForm">-->
+    <div>
+      <form [formGroup]="form" (ngSubmit)="submit(form.value)">
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Name</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control">
+                <input class="input" type="text" placeholder="Name" formControlName="name" required>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Rating</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control">
+                <input id="name" class="input" type="number" placeholder="Rating" formControlName="rating" required>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="errorMessage">
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label"></label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <h6 class="title is-6" style="color: #da3030">{{errorMessage}}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<!--        <div *ngIf="successMessage">-->
+<!--          <div class="field is-horizontal">-->
+<!--            <div class="field-label is-normal">-->
+<!--              <label class="label"></label>-->
+<!--            </div>-->
+<!--            <div class="field-body">-->
+<!--              <div class="field">-->
+<!--                <h6 class="title is-6" style="color: green">{{successMessage}}</h6>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+        <button class="button is-primary is-pulled-right" type="submit">Submit</button>
+      </form>
+    </div>
+
+    <ng-template #noForm>
+<!--      <div *ngIf="errorMessage; else loading">-->
+<!--        {{errorMessage}}-->
+<!--      </div>-->
+<!--      <ng-template #loading>-->
+<!--        <app-load-spinner></app-load-spinner>-->
+<!--      </ng-template>-->
+    </ng-template>
+  </div>
+</div>
