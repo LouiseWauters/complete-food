@@ -5,7 +5,7 @@
 
 <!--    <div *ngIf="ready; else noForm">-->
     <div>
-      <form [formGroup]="form" (ngSubmit)="submit(form.value)">
+      <form [formGroup]="form" (ngSubmit)="submit(form.value)" id="{{className}}Form">
         <div class="field is-horizontal">
           <div class="field-label is-normal">
             <label class="label">Name</label>

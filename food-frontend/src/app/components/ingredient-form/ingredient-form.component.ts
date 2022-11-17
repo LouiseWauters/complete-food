@@ -52,6 +52,7 @@ export class IngredientFormComponent implements OnInit {
             this.successMessage = `Successfully created ingredient ${data.name} with rating ${data.rating}.`;
             this.form.reset();
             this.form.markAsPristine();
+            document.getElementById(`${this.className}Form`)?.firstElementChild?.getElementsByTagName("input")[0].focus();
           },
           error: error => {
             this.errorMessage = error.error;
@@ -86,6 +87,10 @@ export class IngredientFormComponent implements OnInit {
 
   get rating() {
     return this.form.get('rating');
+  }
+
+  get className() {
+    return this.constructor.name;
   }
 
 }
