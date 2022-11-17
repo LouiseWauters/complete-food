@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Ingredient} from "../models/ingredient";
-import {outsideRangeValidator} from "../shared/outside-range-validator.directive";
-import {followRegexValidator} from "../shared/follow-regex-validator.directive";
-import {nonEmptyValidator} from "../shared/non-empty-validator.directive";
-import {IngredientService} from "../services/ingredient.service";
+import {Ingredient} from "../../shared/models/ingredient";
+import {outsideRangeValidator} from "../../shared/validators/outside-range.validator";
+import {followRegexValidator} from "../../shared/validators/follow-regex.validator";
+import {nonEmptyValidator} from "../../shared/validators/non-empty.validator";
+import {IngredientService} from "../../shared/services/ingredient.service";
 
 @Component({
   selector: 'app-ingredient-form',
