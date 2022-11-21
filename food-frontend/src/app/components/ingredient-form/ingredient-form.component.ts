@@ -50,8 +50,10 @@ export class IngredientFormComponent implements OnInit {
         .subscribe({
           next: data => {
             this.successMessage = `Successfully created ingredient ${data.name} with rating ${data.rating}.`;
+            // Reset form to be empty
             this.form.reset();
             this.form.markAsPristine();
+            // Put cursor back in first input field of the form
             document.getElementById(`${this.className}Form`)?.firstElementChild?.getElementsByTagName("input")[0].focus();
           },
           error: error => {
