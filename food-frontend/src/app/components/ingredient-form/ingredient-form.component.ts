@@ -16,6 +16,8 @@ export class IngredientFormComponent implements OnInit {
   form!: FormGroup;
   errorMessage!: string | null;
   successMessage!: string | null;
+  ingredients!: Ingredient[] | null;
+  ready = false;
 
   constructor(
     private ingredientApi: IngredientService
@@ -23,6 +25,7 @@ export class IngredientFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getIngredients();
     this.form = new FormGroup({
       name: new FormControl(
         null,
@@ -37,11 +40,17 @@ export class IngredientFormComponent implements OnInit {
         [
           Validators.required,
           outsideRangeValidator(0, 10)
-        ])
+        ]),
+      is_vegetable: new FormControl(
+        false
+      ),
+      base_ingredient_id: new FormControl(
+        null
+      )
     })
   }
 
-  submit(newIngredient: Ingredient) {
+  submit(newIngredient: Ingredient) : void {
     this.errorMessage = null;
     this.successMessage = null;
     if(this.form.valid) {
@@ -49,12 +58,14 @@ export class IngredientFormComponent implements OnInit {
       this.ingredientApi.createIngredient(newIngredient)
         .subscribe({
           next: data => {
-            this.successMessage = `Successfully created ingredient ${data.name} with rating ${data.rating}.`;
-            // Reset form to be empty
-            this.form.reset();
-            this.form.markAsPristine();
+            this.successMessage = this.createSuccessMessage(data);
+            // Reset form to be empty, excluding default value for is_vegetable
+            this.form.reset({'is_vegetable': false});
             // Put cursor back in first input field of the form
             document.getElementById(`${this.className}Form`)?.firstElementChild?.getElementsByTagName("input")[0].focus();
+            // Add newly created ingredient to our list of ingredients
+            this.ingredients?.push(data);
+            this.sortIngredients();
           },
           error: error => {
             this.errorMessage = error.error;
@@ -81,6 +92,42 @@ export class IngredientFormComponent implements OnInit {
         this.errorMessage = "Rating must be in range [0, 10].";
       }
     }
+  }
+
+  createSuccessMessage(createdIngredient: Ingredient) : string {
+    let message = `Successfully created ingredient ${createdIngredient.name} with rating ${createdIngredient.rating} (`;
+    if (!createdIngredient.is_vegetable) {
+      message = message.concat('not a ');
+    }
+    message = message.concat('vegetable, ');
+    if (createdIngredient.base_ingredient_id) {
+      const base_ingredient_name = this.ingredients?.find(obj => {
+        return obj.id === createdIngredient.base_ingredient_id
+      })?.name;
+      message = message.concat(`specification of ${base_ingredient_name}).`);
+    } else {
+      message = message.concat('not a specification).')
+    }
+    return message
+  }
+
+  getIngredients() : void {
+    this.ingredientApi.getIngredients()
+      .subscribe(
+        ingredients => {
+          this.ingredients = ingredients;
+          this.sortIngredients();
+          this.ready = true;
+        }
+      );
+  }
+
+  sortIngredients() : void {
+    this.ingredients?.sort((a, b) => a.name.localeCompare(b.name))
+  }
+
+  clearSelected() : void {
+    this.form.controls['base_ingredient_id'].setValue(null);
   }
 
   get name() {

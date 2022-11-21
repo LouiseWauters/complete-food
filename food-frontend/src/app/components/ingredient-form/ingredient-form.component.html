@@ -3,9 +3,10 @@
     <h1 class="title">New ingredient</h1>
     <br>
 
-<!--    <div *ngIf="ready; else noForm">-->
+    <div *ngIf="ready; else noForm">
     <div>
       <form [formGroup]="form" (ngSubmit)="submit(form.value)" id="{{className}}Form">
+        <!-- Name input field -->
         <div class="field is-horizontal">
           <div class="field-label is-normal">
             <label class="label">Name</label>
@@ -19,6 +20,7 @@
           </div>
         </div>
 
+        <!-- Rating input field -->
         <div class="field is-horizontal">
           <div class="field-label is-normal">
             <label class="label">Rating</label>
@@ -26,12 +28,51 @@
           <div class="field-body">
             <div class="field">
               <p class="control">
-                <input id="name" class="input" type="number" placeholder="Rating" formControlName="rating" required>
+                <input class="input" type="number" placeholder="Rating" formControlName="rating" required>
               </p>
             </div>
           </div>
         </div>
 
+        <!-- Vegetable checkbox -->
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Vegetable</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control">
+                <label class="checkbox is-normal">
+                  <input type="checkbox" formControlName="is_vegetable">
+                  This ingredient is a vegetable.
+                </label>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Base ingredient select -->
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Specification of</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select id="baseIngredientSelect" formControlName="base_ingredient_id">
+                    <option *ngFor="let ingredient of ingredients" [value]="ingredient.id">{{ingredient.name}}</option>
+                  </select>
+                </div>
+                <div>
+                  <a href="#" (click)="clearSelected()">Clear</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error message -->
         <div *ngIf="errorMessage">
           <div class="field is-horizontal">
             <div class="field-label is-normal">
@@ -45,6 +86,7 @@
           </div>
         </div>
 
+        <!-- Success message -->
         <div *ngIf="successMessage">
           <div class="field is-horizontal">
             <div class="field-label is-normal">
@@ -58,17 +100,18 @@
           </div>
         </div>
 
+        <!-- Submit button -->
         <button class="button is-primary is-pulled-right" type="submit">Submit</button>
       </form>
     </div>
-
-<!--    <ng-template #noForm>-->
-<!--      <div *ngIf="errorMessage; else loading">-->
-<!--        {{errorMessage}}-->
-<!--      </div>-->
-<!--      <ng-template #loading>-->
-<!--        <app-load-spinner></app-load-spinner>-->
-<!--      </ng-template>-->
-<!--    </ng-template>-->
+    </div>
+    <ng-template #noForm>
+      <div *ngIf="errorMessage; else loading">
+        {{errorMessage}}
+      </div>
+      <ng-template #loading>
+        <app-load-spinner></app-load-spinner>
+      </ng-template>
+    </ng-template>
   </div>
 </div>

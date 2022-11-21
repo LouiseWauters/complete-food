@@ -26,7 +26,7 @@ def get_ingredients():
 @ingredient_blueprint.route("/ingredients", methods=["POST"])
 @handle_ingredient_crud
 def add_ingredient():
-    posted_ingredient = IngredientSchema(only=("name", "rating")).load(
+    posted_ingredient = IngredientSchema(only=("name", "rating", "is_vegetable", "base_ingredient_id")).load(
         request.get_json()
     )
 

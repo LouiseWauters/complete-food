@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 import { IngredientFormComponent } from './components/ingredient-form/ingredient-form.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
+import { LoadSpinnerComponent } from './components/load-spinner/load-spinner.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    IngredientFormComponent
+    IngredientFormComponent,
+    LoadSpinnerComponent
   ],
     imports: [
         BrowserModule,
