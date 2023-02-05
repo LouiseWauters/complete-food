@@ -5,6 +5,8 @@ import {outsideRangeValidator} from "../../shared/validators/outside-range.valid
 import {followRegexValidator} from "../../shared/validators/follow-regex.validator";
 import {nonEmptyValidator} from "../../shared/validators/non-empty.validator";
 import {IngredientService} from "../../shared/services/ingredient.service";
+import {MONTHS} from "../../shared/data/months";
+import {Month} from "../../shared/models/month";
 
 @Component({
   selector: 'app-ingredient-form',
@@ -51,8 +53,7 @@ export class IngredientFormComponent implements OnInit {
   }
 
   submit(newIngredient: Ingredient) : void {
-    this.errorMessage = null;
-    this.successMessage = null;
+    this.clearMessage();
     if(this.form.valid) {
       console.log(newIngredient);
       this.ingredientApi.createIngredient(newIngredient)
@@ -130,12 +131,44 @@ export class IngredientFormComponent implements OnInit {
     this.form.controls['base_ingredient_id'].setValue(null);
   }
 
+  clearMessage() : void {
+    this.errorMessage = null;
+    this.successMessage = null;
+  }
+
+  clickSeason(month: string) : void {
+    const seasonButton = document.getElementById(`${month}Button`);
+    if (seasonButton?.classList.contains('is-primary')) {
+      seasonButton.classList.remove('is-primary');
+    } else {
+      seasonButton?.classList.add('is-primary');
+    }
+  }
+
+  selectAllMonths() : void {
+    const elems = document.getElementById("seasonButtons")?.getElementsByTagName("button");
+    if (elems) {
+      for (let i = 0; i < elems.length; i++) {
+        elems[i].classList.add('is-primary');
+      }
+    }
+  }
+
+  getSelectedMonths(): Month[] {
+    const months = this.months;
+    return months;
+  }
+
   get name() {
     return this.form.get('name');
   }
 
   get rating() {
     return this.form.get('rating');
+  }
+
+  get months() {
+    return MONTHS;
   }
 
   get className() {

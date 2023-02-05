@@ -72,6 +72,32 @@
           </div>
         </div>
 
+        <!-- Season buttons -->
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Season</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <div class="buttons" id="seasonButtons">
+                  <button *ngFor="let month of months"
+                          type="button"
+                          class="button"
+                          id="{{month.name}}Button"
+                          (click)="clickSeason(month.name)">
+                    {{month.abbreviation}}
+                  </button>
+                </div>
+                <div>
+                  <a href="#" (click)="selectAllMonths()">Select all</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
         <!-- Error message -->
         <div *ngIf="errorMessage">
           <div class="field is-horizontal">
