@@ -20,6 +20,8 @@ def handle_ingredient_crud(f):
             error_message = "Ingredient does not exist."
         except (NameError, IntegrityError):
             error_message = "Ingredient name already exists."
+        except KeyError:
+            error_message = "Base ingredient does not exist."
         except Exception:
             error_message = "Something went wrong."
         return make_response(error_message, 400)

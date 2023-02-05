@@ -42,6 +42,16 @@ def add_ingredient():
     ):
         raise NameError
 
+    # Check if base ingredient id is valid
+    if posted_ingredient["base_ingredient_id"]:
+        if (
+            session.query(Ingredient)
+            .filter(Ingredient.id == posted_ingredient["base_ingredient_id"])
+            .first()
+            is None
+        ):
+            raise KeyError
+
     ingredient = Ingredient(**posted_ingredient)
     session.add(ingredient)
     session.commit()
@@ -52,7 +62,7 @@ def add_ingredient():
     return jsonify(new_ingredient), 201
 
 
-@ingredient_blueprint.route("/ingredient/<int:ingredient_id>", methods=["PUT"])
+@ingredient_blueprint.route("/ingredients/<int:ingredient_id>", methods=["PUT"])
 @handle_ingredient_crud
 def put_ingredient(ingredient_id):
     data = request.get_json()
@@ -73,7 +83,7 @@ def put_ingredient(ingredient_id):
     return jsonify(ingredient), 200
 
 
-@ingredient_blueprint.route("/ingredient/<int:ingredient_id>", methods=["DELETE"])
+@ingredient_blueprint.route("/ingredients/<int:ingredient_id>", methods=["DELETE"])
 @handle_ingredient_crud
 def delete_ingredient(ingredient_id):
     session = Session()
