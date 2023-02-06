@@ -3,6 +3,11 @@ def check_range(value, upper_bound, lower_bound):
     if upper_bound < value or value < lower_bound:
         raise ValueError("Value is not in range.")
 
+def check_required(posted_item, required_attributes):
+    for attr in required_attributes:
+        if attr not in posted_item:
+            raise AttributeError(f'Attribute "{attr}" is required.')
+
 def check_duplicate(entity, attribute, value):
     session = Session()
     # Check if value already exists

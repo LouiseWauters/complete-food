@@ -59,8 +59,6 @@ def check_food_item_values(posted_food_item, update_mode=False, original_food_it
                 check_duplicate(entity=FoodItem, attribute="name", value=posted_food_item["name"])
         else:
             check_duplicate(entity=FoodItem, attribute="name", value=posted_food_item["name"])
-    elif not update_mode:
-        raise AttributeError
 
     if posted_food_item.get("food_category_id") is not None:
         check_existence(entity=FoodCategory, attribute="id", value=posted_food_item["food_category_id"])

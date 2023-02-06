@@ -3,7 +3,7 @@ from flask import Blueprint, jsonify, request, make_response
 from src.entities.entity import Session
 from src.entities.food_item import FoodItem, FoodItemSchema
 from src.utils.food_item_utils import handle_food_item_crud, check_food_item_values, get_posted_food_item
-from src.utils.utils import update_attribute
+from src.utils.utils import update_attribute, check_required
 
 food_item_blueprint = Blueprint("food_item_blueprint", __name__)
 
@@ -45,6 +45,8 @@ def get_food_item(food_item_id):
 @handle_food_item_crud
 def add_food_item():
     posted_food_item = get_posted_food_item(request)
+
+    check_required(posted_item=posted_food_item, required_attributes=["name"])
 
     check_food_item_values(posted_food_item)
 
