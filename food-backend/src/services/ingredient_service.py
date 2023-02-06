@@ -2,7 +2,8 @@ from flask import Blueprint, jsonify, request, make_response
 
 from src.entities.entity import Session
 from src.entities.ingredient import Ingredient, IngredientSchema
-from src.services.ingredient_utils import handle_ingredient_crud, check_rating_range
+from src.services.ingredient_utils import handle_ingredient_crud
+from src.services.utils import check_range
 
 ingredient_blueprint = Blueprint("ingredient_blueprint", __name__)
 
@@ -30,7 +31,7 @@ def add_ingredient():
         request.get_json()
     )
 
-    check_rating_range(posted_ingredient["rating"])
+    check_range(posted_ingredient["rating"], upper_bound=10, lower_bound=0)
 
     session = Session()
     # Check if name already exists
@@ -67,7 +68,7 @@ def add_ingredient():
 def put_ingredient(ingredient_id):
     data = request.get_json()
 
-    check_rating_range(data["rating"])
+    check_range(data["rating"], upper_bound=10, lower_bound=0)
 
     session = Session()
     ingredient_object = (

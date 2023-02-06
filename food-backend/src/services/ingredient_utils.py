@@ -4,11 +4,6 @@ from flask import make_response
 from sqlalchemy.exc import IntegrityError, NoResultFound
 
 
-def check_rating_range(rating):
-    if 10 < rating or rating < 0:
-        raise ValueError
-
-
 def handle_ingredient_crud(f):
     @wraps(f)
     def decorated(*args, **kwargs):
