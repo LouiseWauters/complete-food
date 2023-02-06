@@ -37,3 +37,30 @@ def check_existence(entity, attribute, value):
 def update_attribute(item, attribute, new_value_dict):
     if attribute in new_value_dict:
         setattr(item, attribute, new_value_dict[attribute])
+
+def get_all(entity, entity_schema):
+    # Fetching food categories from the database
+    session = Session()
+    objects = session.query(entity).all()
+
+    # Transforming food categories into JSON-serializable objects
+    schema = entity_schema(many=True)
+    items = schema.dump(objects)
+
+    session.close()
+    return items
+
+def get_by_id(entity, entity_schema, item_id):
+    # Fetching food category from the database
+    session = Session()
+    db_object = session \
+        .query(entity) \
+        .filter(entity.id == item_id) \
+        .one()
+
+    # Transforming food categories into JSON-serializable objects
+    schema = entity_schema(many=False)
+    item = schema.dump(db_object)
+
+    session.close()
+    return item

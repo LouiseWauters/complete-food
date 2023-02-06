@@ -3,7 +3,7 @@ from flask import Blueprint, jsonify, request, make_response
 from src.entities.entity import Session
 from src.entities.food_category import FoodCategory, FoodCategorySchema
 from src.utils.food_category_utils import handle_food_category_crud
-from src.utils.utils import update_attribute, check_duplicate, check_required
+from src.utils.utils import update_attribute, check_duplicate, check_required, get_all, get_by_id
 
 food_category_blueprint = Blueprint("food_category_blueprint", __name__)
 
@@ -11,35 +11,14 @@ food_category_blueprint = Blueprint("food_category_blueprint", __name__)
 @food_category_blueprint.route("/food-categories")
 @handle_food_category_crud
 def get_food_categories():
-    # TODO refactor because this code can be reused
-    # Fetching food categories from the database
-    session = Session()
-    food_category_objects = session.query(FoodCategory).all()
-
-    # Transforming food categories into JSON-serializable objects
-    schema = FoodCategorySchema(many=True)
-    food_categories = schema.dump(food_category_objects)
-
-    session.close()
+    food_categories = get_all(FoodCategory, FoodCategorySchema)
     # Serializing as JSON
     return jsonify(food_categories), 200
 
 @food_category_blueprint.route("/food-categories/<int:food_category_id>")
 @handle_food_category_crud
 def get_food_category(food_category_id):
-    # TODO refactor because this code can be reused
-    # Fetching food category from the database
-    session = Session()
-    food_category_object = session\
-        .query(FoodCategory)\
-        .filter(FoodCategory.id == food_category_id)\
-        .one()
-
-    # Transforming food categories into JSON-serializable objects
-    schema = FoodCategorySchema(many=False)
-    food_category = schema.dump(food_category_object)
-
-    session.close()
+    food_category = get_by_id(FoodCategory, FoodCategorySchema, food_category_id)
     # Serializing as JSON
     return jsonify(food_category), 200
 

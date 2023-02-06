@@ -3,7 +3,7 @@ from flask import Blueprint, jsonify, request, make_response
 from src.entities.entity import Session
 from src.entities.food_item import FoodItem, FoodItemSchema
 from src.utils.food_item_utils import handle_food_item_crud, check_food_item_values, get_posted_food_item
-from src.utils.utils import update_attribute, check_required
+from src.utils.utils import update_attribute, check_required, get_all, get_by_id
 
 food_item_blueprint = Blueprint("food_item_blueprint", __name__)
 
@@ -11,33 +11,14 @@ food_item_blueprint = Blueprint("food_item_blueprint", __name__)
 @food_item_blueprint.route("/food-items")
 @handle_food_item_crud
 def get_food_items():
-    # Fetching food items from the database
-    session = Session()
-    food_item_objects = session.query(FoodItem).all()
-
-    # Transforming food items into JSON-serializable objects
-    schema = FoodItemSchema(many=True)
-    food_items = schema.dump(food_item_objects)
-
-    session.close()
+    food_items = get_all(FoodItem, FoodItemSchema)
     # Serializing as JSON
     return jsonify(food_items), 200
 
 @food_item_blueprint.route("/food-items/<int:food_item_id>")
 @handle_food_item_crud
 def get_food_item(food_item_id):
-    # Fetching food item from the database
-    session = Session()
-    food_item_object = session\
-        .query(FoodItem)\
-        .filter(FoodItem.id == food_item_id)\
-        .one()
-
-    # Transforming food items into JSON-serializable objects
-    schema = FoodItemSchema(many=False)
-    food_item = schema.dump(food_item_object)
-
-    session.close()
+    food_item = get_by_id(FoodItem, FoodItemSchema, food_item_id)
     # Serializing as JSON
     return jsonify(food_item), 200
 
