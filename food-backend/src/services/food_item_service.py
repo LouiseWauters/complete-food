@@ -2,8 +2,8 @@ from flask import Blueprint, jsonify, request, make_response
 
 from src.entities.entity import Session
 from src.entities.food_item import FoodItem, FoodItemSchema
-from src.services.food_item_utils import handle_food_item_crud
-from src.services.utils import check_range
+from src.utils.food_item_utils import handle_food_item_crud
+from src.utils.utils import check_range
 
 food_item_blueprint = Blueprint("food_item_blueprint", __name__)
 
