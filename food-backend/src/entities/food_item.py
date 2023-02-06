@@ -1,7 +1,9 @@
 from marshmallow import Schema, fields
 from sqlalchemy import Column, String, Date, Integer, ForeignKey, Boolean, SmallInteger
+from sqlalchemy.orm import relationship
 
 from src.entities.entity import Base, Entity
+from src.entities.food_category import FoodCategorySchema
 
 
 class FoodItem(Entity, Base):
@@ -14,9 +16,11 @@ class FoodItem(Entity, Base):
     is_wfd = Column(Boolean, nullable=False)
     is_health_rotation = Column(Boolean, nullable=False)
     season = Column(SmallInteger, nullable=False)
-    # food_category_id = Column(Integer, ForeignKey('food_categories.id'), nullable=True)
+    food_category_id = Column(Integer, ForeignKey('food_categories.id'), nullable=True)
+    food_category = relationship("FoodCategory", backref="food_items")
 
-    def __init__(self, name, is_full_meal=False, is_wfd=False, is_health_rotation=False, season=4095):
+    def __init__(self, name, is_full_meal=False, is_wfd=False, is_health_rotation=False, season=4095,
+                 food_category_id=None):
         Entity.__init__(self)
         self.name = name
         self.is_wfd = is_wfd
@@ -24,6 +28,7 @@ class FoodItem(Entity, Base):
         self.is_health_rotation = is_health_rotation
         self.season = season
         self.times_eaten = 0
+        self.food_category_id = food_category_id
 
 
 class FoodItemSchema(Schema):
@@ -35,5 +40,5 @@ class FoodItemSchema(Schema):
     is_wfd = fields.Boolean()
     is_health_rotation = fields.Boolean()
     season = fields.Integer()
-    # food_category_id = fields.Number(allow_none=True)
-    # food_category ??
+    food_category_id = fields.Integer(allow_none=True)
+    food_category = fields.Pluck(FoodCategorySchema, 'name')
