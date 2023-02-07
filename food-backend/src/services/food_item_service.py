@@ -2,10 +2,11 @@ from flask import Blueprint, jsonify, request, make_response
 
 from src.entities.entity import Session
 from src.entities.food_item import FoodItem, FoodItemSchema
-from src.relations.food_item_extension import FoodItemExtension
-from src.utils.food_item_utils import handle_food_item_crud, check_food_item_values, get_posted_food_item
-from src.utils.utils import update_attribute, check_required, get_all, get_by_id
-
+from src.relations.food_item_extension import FoodItemExtension, FoodItemExtensionSchema
+from src.utils.food_item_utils import handle_food_item_crud, check_food_item_values, get_posted_food_item, \
+    get_all_base_food_items
+from src.utils.utils import update_attribute, check_required, get_all, get_by_id, check_existence
+from src.utils.exceptions import CircularDependencyError
 food_item_blueprint = Blueprint("food_item_blueprint", __name__)
 
 
@@ -74,3 +75,40 @@ def delete_food_item(food_item_id):
     session.commit()
     session.close()
     return make_response("Food item has been deleted.", 200)
+
+@food_item_blueprint.route("/food-items/<int:base_id>/extensions/<int:extension_id>", methods=["POST"])
+@handle_food_item_crud
+def add_food_item_extension(base_id, extension_id):
+
+    base_food_item = get_by_id(entity=FoodItem, entity_schema=FoodItemSchema, item_id=base_id)
+    all_base_ids = get_all_base_food_items(base_food_item)
+    check_existence(entity=FoodItem, attribute="id", value=extension_id)
+
+    if extension_id in all_base_ids or extension_id == base_id:
+        raise CircularDependencyError
+
+    session = Session()
+    extension = FoodItemExtension(base_food_id=base_id, extension_food_id=extension_id)
+    session.add(extension)
+    session.commit()
+
+    # Return created extension
+    new_extension = FoodItemExtensionSchema().dump(extension)
+    session.close()
+    return jsonify(new_extension), 201
+
+
+@food_item_blueprint.route("/food-items/<int:base_id>/extensions/<int:extension_id>", methods=["DELETE"])
+@handle_food_item_crud
+def delete_food_item_extension(base_id, extension_id):
+    session = Session()
+    food_item_extension_object = (
+        session.query(FoodItemExtension)
+        .filter(FoodItemExtension.base_food_id == base_id)
+        .filter(FoodItemExtension.extension_food_id == extension_id)
+        .one()
+    )
+    session.delete(food_item_extension_object)
+    session.commit()
+    session.close()
+    return make_response("Food item extension has been deleted.", 200)

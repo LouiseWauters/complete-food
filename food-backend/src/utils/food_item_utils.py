@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError, NoResultFound
 from src.entities.food_category import FoodCategory
 from src.entities.food_item import FoodItem, FoodItemSchema
 from src.utils.utils import check_existence, check_duplicate, check_range, get_by_ids
-
+from src.utils.exceptions import CircularDependencyError
 
 def handle_food_item_crud(f):
     @wraps(f)
@@ -16,6 +16,8 @@ def handle_food_item_crud(f):
             return f(*args, **kwargs)
         except AttributeError:
             error_message = "Name is required."
+        except CircularDependencyError:
+            error_message = "Food items cannot be linked due to circular dependency."
         except ValidationError:
             error_message = "Attributes do not have the right datatype."
         except ValueError:
