@@ -1,4 +1,5 @@
 from src.entities.entity import Session
+from src.entities.food_item import FoodItem
 def check_range(value, upper_bound, lower_bound):
     if upper_bound < value or value < lower_bound:
         raise ValueError("Value is not in range.")
@@ -64,3 +65,13 @@ def get_by_id(entity, entity_schema, item_id):
 
     session.close()
     return item
+
+def get_all_base_item_ids(food_item):
+    session = Session()
+    base_food_items_ids = {base.base_food_id for base in food_item.base_food_items}
+    if len(base_food_items_ids) > 0:
+        base_food_items = session.query(FoodItem).filter(FoodItem.id.in_(base_food_items_ids)).all()
+        for base_food_item in base_food_items:
+            base_food_items_ids.update(get_all_base_item_ids(base_food_item))
+    session.close()
+    return base_food_items_ids

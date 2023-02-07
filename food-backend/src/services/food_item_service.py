@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request, make_response
 
 from src.entities.entity import Session
 from src.entities.food_item import FoodItem, FoodItemSchema
+from src.relations.food_item_extension import FoodItemExtension
 from src.utils.food_item_utils import handle_food_item_crud, check_food_item_values, get_posted_food_item
 from src.utils.utils import update_attribute, check_required, get_all, get_by_id
 

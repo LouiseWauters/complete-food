@@ -13,7 +13,7 @@ CORS(app)
 # generate database schema
 Base.metadata.create_all(engine)
 
-# Add ingredient blueprint to flask app
+# Add blueprints to flask app
 app.register_blueprint(ingredient_blueprint)
 app.register_blueprint(food_item_blueprint)
 app.register_blueprint(food_category_blueprint)
