@@ -1,5 +1,6 @@
 from src.entities.entity import Session
-from src.entities.food_item import FoodItem
+
+
 def check_range(value, upper_bound, lower_bound):
     if upper_bound < value or value < lower_bound:
         raise ValueError("Value is not in range.")
@@ -52,26 +53,31 @@ def get_all(entity, entity_schema):
     return items
 
 def get_by_id(entity, entity_schema, item_id):
-    # Fetching food category from the database
+    # Fetching objects from the database
     session = Session()
     db_object = session \
         .query(entity) \
         .filter(entity.id == item_id) \
         .one()
 
-    # Transforming food categories into JSON-serializable objects
+    # Transforming objects into JSON-serializable objects
     schema = entity_schema(many=False)
     item = schema.dump(db_object)
 
     session.close()
     return item
 
-def get_all_base_item_ids(food_item):
+def get_by_ids(entity, entity_schema, item_ids):
+    # Fetching food category from the database
     session = Session()
-    base_food_items_ids = {base.base_food_id for base in food_item.base_food_items}
-    if len(base_food_items_ids) > 0:
-        base_food_items = session.query(FoodItem).filter(FoodItem.id.in_(base_food_items_ids)).all()
-        for base_food_item in base_food_items:
-            base_food_items_ids.update(get_all_base_item_ids(base_food_item))
+    db_object = session \
+        .query(entity) \
+        .filter(entity.id.in_(item_ids)) \
+        .all()
+
+    # Transforming food categories into JSON-serializable objects
+    schema = entity_schema(many=True)
+    items = schema.dump(db_object)
+
     session.close()
-    return base_food_items_ids
+    return items
