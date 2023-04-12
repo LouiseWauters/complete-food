@@ -1,0 +1,7 @@
+<div class="section">
+  <div class="container">
+    <h1 class="title">{{foodItem?.name}}</h1>
+    <br>
+    <app-food-item-chip *ngFor="let base of allBaseItems" [foodItem]="base"></app-food-item-chip>
+  </div>
+</div>

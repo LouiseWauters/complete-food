@@ -1,0 +1,24 @@
+.chip {
+  display: flex;
+  flex-direction: row;
+  background-color: lightpink;
+  width: max-content;
+  border-radius: 20px;
+  margin: 5px;
+}
+
+.chip-content {
+  padding: 5px 15px;
+}
+
+.chip-close {
+  padding: 5px 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.chip-link {
+  cursor: pointer;
+}

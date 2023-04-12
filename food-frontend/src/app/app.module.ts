@@ -7,12 +7,18 @@ import { IngredientFormComponent } from './components/ingredient-form/ingredient
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import { LoadSpinnerComponent } from './components/load-spinner/load-spinner.component';
+import {FoodItemFormComponent} from "./components/food-item-form/food-item-form.component";
+import { FoodItemChipComponent } from './components/food-item-chip/food-item-chip.component';
+import { FoodItemPageComponent } from './components/food-item-page/food-item-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     IngredientFormComponent,
-    LoadSpinnerComponent
+    LoadSpinnerComponent,
+    FoodItemFormComponent,
+    FoodItemChipComponent,
+    FoodItemPageComponent
   ],
     imports: [
         BrowserModule,

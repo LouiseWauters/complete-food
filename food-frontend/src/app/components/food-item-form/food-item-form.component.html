@@ -1,0 +1,215 @@
+<div class="section">
+  <div class="container">
+    <h1 class="title">New food item</h1>
+    <br>
+
+    <div *ngIf="ready; else noForm">
+    <div>
+      <form [formGroup]="form" (ngSubmit)="submit(form.value)" id="{{className}}Form">
+        <!-- Name input field -->
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Name</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control">
+                <input class="input" type="text" placeholder="Name" formControlName="name" required>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Health rotation checkbox -->
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Health rotation</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control">
+                <label class="checkbox is-normal">
+                  <input type="checkbox" formControlName="is_health_rotation">
+                  This food item is part of the health rotation.
+                </label>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- WFD checkbox -->
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">WFD</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control">
+                <label class="checkbox is-normal">
+                  <input type="checkbox" formControlName="is_wfd">
+                  This food item is part of what's for dinner.
+                </label>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Health rotation checkbox -->
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Full meal</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control">
+                <label class="checkbox is-normal">
+                  <input type="checkbox" formControlName="is_full_meal">
+                  This food item is a full meal.
+                </label>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Food category select -->
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Food category</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select id="foodCategorySelect" formControlName="food_category_id">
+                    <option *ngFor="let foodCategory of foodCategories" [value]="foodCategory.id">{{foodCategory.name}}</option>
+                  </select>
+                </div>
+                <div>
+                  <a href="#" (click)="clearSelectedCategory()">Clear</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- show chosen base food items -->
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Base food items</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="chip-list">
+                <app-food-item-chip *ngFor="let base of bases" [foodItem]="base" (removeItem)="removeBase($event)"></app-food-item-chip>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Base food items select -->
+        <form [formGroup]="basesForm">
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label"></label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <input class="input" type="text" placeholder="New base food item" list="food-items" (change)="addBase()"
+                         formControlName="base_food_item_name">
+                  <datalist class="datalist" id="food-items">
+                    <option *ngFor="let foodItem of foodItems" [value]="foodItem.name"></option>
+                  </datalist>
+                </p>
+              </div>
+            </div>
+          </div>
+        </form>
+        <br>
+
+
+        <!-- Season buttons -->
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Season</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <div class="buttons" id="seasonButtons">
+                  <button *ngFor="let month of months"
+                          type="button"
+                          class="button"
+                          id="{{month.name}}Button"
+                          (click)="clickSeason(month.name)">
+                    {{month.abbreviation}}
+                  </button>
+                </div>
+                <div>
+                  <a href="#" (click)="selectAllMonths()">Select all</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recipe link input field -->
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Recipe link</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control">
+                <input class="input" type="text" placeholder="Recipe link" formControlName="recipe_link">
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Error message -->
+        <div *ngIf="errorMessage">
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label"></label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <h6 class="title is-6" style="color: #da3030">{{errorMessage}}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success message -->
+        <div *ngIf="successMessage">
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label"></label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <h6 class="title is-6" style="color: green">{{successMessage}}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit button -->
+        <button class="button is-primary is-pulled-right" type="submit">Submit</button>
+      </form>
+    </div>
+    </div>
+    <ng-template #noForm>
+      <div *ngIf="errorMessage; else loading">
+        {{errorMessage}}
+      </div>
+      <ng-template #loading>
+        <app-load-spinner></app-load-spinner>
+      </ng-template>
+    </ng-template>
+  </div>
+</div>
