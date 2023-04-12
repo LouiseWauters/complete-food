@@ -45,7 +45,7 @@ class FoodItemSchema(Schema):
     is_health_rotation = fields.Boolean()
     season = fields.Integer()
     food_category_id = fields.Integer(allow_none=True)
-    recipe_link = fields.Str()
+    recipe_link = fields.Str(allow_none=True)
     food_category = fields.Pluck(FoodCategorySchema, 'name')
     base_food_items = fields.Pluck(FoodItemExtensionSchema, 'base_food_id', many=True)
     extension_food_items = fields.Pluck(FoodItemExtensionSchema, 'extension_food_id', many=True)
