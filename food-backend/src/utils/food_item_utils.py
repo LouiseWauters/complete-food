@@ -85,3 +85,22 @@ def get_all_related_food_items(food_item, relation_direction, already_evaluated=
             related_food_items_ids.update(get_all_related_food_items(related_food_item, relation_direction,
                                                                      already_evaluated))
     return related_food_items_ids
+
+
+def get_all_related_fringe_food_items(food_item, relation_direction, already_evaluated=None, only_vegetables=False):
+    """Gets all bases (or extensions) from food_item that themselves don't have a base (or extension)."""
+    if already_evaluated is None:
+        already_evaluated = set()
+    already_evaluated.add(food_item["id"])
+    related_food_item_ids = set(food_item[relation_direction]) - already_evaluated
+    already_evaluated.update(related_food_item_ids)
+    related_fringe_item_ids = set()
+    if len(related_food_item_ids) > 0:
+        related_food_items = get_by_ids(FoodItem, FoodItemSchema, related_food_item_ids)
+        for related_food_item in related_food_items:
+            # TODO vegetables should not be hardcoded
+            if len(related_food_item[relation_direction]) == 0 and (not only_vegetables or related_food_item['food_category'] == 'Vegetables'):
+                related_fringe_item_ids.add(related_food_item["id"])
+            related_fringe_item_ids.update(get_all_related_fringe_food_items(related_food_item, relation_direction,
+                                                                             already_evaluated, only_vegetables))
+    return related_fringe_item_ids
