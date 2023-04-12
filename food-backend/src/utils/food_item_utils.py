@@ -66,13 +66,22 @@ def check_food_item_values(posted_food_item, update_mode=False, original_food_it
         check_existence(entity=FoodCategory, attribute="id", value=posted_food_item["food_category_id"])
 
 def get_all_base_food_items(food_item, already_evaluated=None):
+    return get_all_related_food_items(food_item=food_item, relation_direction='base_food_items',
+                                      already_evaluated=already_evaluated)
+
+def get_all_extension_food_items(food_item, already_evaluated=None):
+    return get_all_related_food_items(food_item=food_item, relation_direction='extension_food_items',
+                                      already_evaluated=already_evaluated)
+
+def get_all_related_food_items(food_item, relation_direction, already_evaluated=None):
     if already_evaluated is None:
         already_evaluated = set()
     already_evaluated.add(food_item["id"])
-    base_food_items_ids = set(food_item["base_food_items"]) - already_evaluated
-    already_evaluated.update(base_food_items_ids)
-    if len(base_food_items_ids) > 0:
-        base_food_items = get_by_ids(FoodItem, FoodItemSchema, base_food_items_ids)
-        for base_food_item in base_food_items:
-            base_food_items_ids.update(get_all_base_food_items(base_food_item, already_evaluated=already_evaluated))
-    return base_food_items_ids
+    related_food_items_ids = set(food_item[relation_direction]) - already_evaluated
+    already_evaluated.update(related_food_items_ids)
+    if len(related_food_items_ids) > 0:
+        related_food_items = get_by_ids(FoodItem, FoodItemSchema, related_food_items_ids)
+        for related_food_item in related_food_items:
+            related_food_items_ids.update(get_all_related_food_items(related_food_item, relation_direction,
+                                                                     already_evaluated))
+    return related_food_items_ids
