@@ -17,12 +17,13 @@ class FoodItem(Entity, Base):
     is_health_rotation = Column(Boolean, nullable=False)
     season = Column(SmallInteger, nullable=False)
     food_category_id = Column(Integer, ForeignKey('food_categories.id'), nullable=True)
+    recipe_link = Column(String, nullable=True)
     food_category = relationship("FoodCategory", backref="food_items")
     base_food_items = relationship("FoodItemExtension", back_populates="extension_food_item", primaryjoin='FoodItem.id==FoodItemExtension.extension_food_id')
     extension_food_items = relationship("FoodItemExtension", back_populates="base_food_item", primaryjoin='FoodItem.id==FoodItemExtension.base_food_id')
 
     def __init__(self, name, is_full_meal=False, is_wfd=False, is_health_rotation=False, season=4095,
-                 food_category_id=None):
+                 food_category_id=None, recipe_link=None):
         Entity.__init__(self)
         self.name = name
         self.is_wfd = is_wfd
@@ -31,6 +32,7 @@ class FoodItem(Entity, Base):
         self.season = season
         self.times_eaten = 0
         self.food_category_id = food_category_id
+        self.recipe_link = recipe_link
 
 
 class FoodItemSchema(Schema):
@@ -43,6 +45,7 @@ class FoodItemSchema(Schema):
     is_health_rotation = fields.Boolean()
     season = fields.Integer()
     food_category_id = fields.Integer(allow_none=True)
+    recipe_link = fields.Str()
     food_category = fields.Pluck(FoodCategorySchema, 'name')
     base_food_items = fields.Pluck(FoodItemExtensionSchema, 'base_food_id', many=True)
     extension_food_items = fields.Pluck(FoodItemExtensionSchema, 'extension_food_id', many=True)

@@ -48,7 +48,8 @@ def get_posted_food_item(request):
                                             "is_full_meal",
                                             "is_health_rotation",
                                             "season",
-                                            "food_category_id")).load(request.get_json())
+                                            "food_category_id",
+                                            "recipe_link")).load(request.get_json())
     return posted_food_item
 
 def check_food_item_values(posted_food_item, update_mode=False, original_food_item=None):

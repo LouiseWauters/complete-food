@@ -54,7 +54,7 @@ def put_food_item(food_item_id):
 
     check_food_item_values(posted_food_item, update_mode=True, original_food_item=food_item_object)
 
-    for attr in ["name", "is_wfd", "is_full_meal", "is_health_rotation", "season", "food_category_id"]:
+    for attr in ["name", "is_wfd", "is_full_meal", "is_health_rotation", "season", "food_category_id", "recipe_link"]:
         update_attribute(food_item_object, attribute=attr, new_value_dict=posted_food_item)
     session.commit()
 
