@@ -14,6 +14,7 @@ export class FoodItemPageComponent implements OnInit {
   allBaseItems: FoodItem[] | null = null;
   allExtensionItems: FoodItem[] | null = null;
   ready: boolean = false;
+  onlyShowFringe: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,6 +51,10 @@ export class FoodItemPageComponent implements OnInit {
     } else {
       this.router.navigate(['']);
     }
+  }
+
+  clickFringe(): void {
+    this.onlyShowFringe = !this.onlyShowFringe;
   }
 
 }

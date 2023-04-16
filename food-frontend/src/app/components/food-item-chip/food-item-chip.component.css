@@ -24,13 +24,17 @@
 }
 
 .is-blue {
-  background-color: lightblue;
+  background-color: #CFF9FE;
 }
 
 .is-pink {
-  background-color: lightpink;
+  background-color: #FECFE2;
 }
 
 .is-green {
-  background-color: lightgreen;
+  background-color: #E2FECF;
+}
+
+.is-dark-green {
+  background-color: #C9DEBB;
 }
