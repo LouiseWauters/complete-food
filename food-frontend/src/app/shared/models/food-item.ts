@@ -12,4 +12,5 @@ export interface FoodItem {
   recipe_link: string;
   base_food_items: number[];
   extension_food_items: number[];
+  vegetable_count?: number;
 }

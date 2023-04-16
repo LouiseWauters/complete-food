@@ -42,6 +42,7 @@ export class FoodItemPageComponent implements OnInit {
         this.foodItem = data;
         this.foodItemApi.getAllFoodItemBases(this.foodItem.id).subscribe(bases => {
           this.allBaseItems = bases;
+          this.countVegetables();
           this.foodItemApi.getAllFoodItemExtensions(+foodItemId).subscribe(extensions => {
             this.allExtensionItems = extensions;
             this.ready = true;
@@ -55,6 +56,18 @@ export class FoodItemPageComponent implements OnInit {
 
   clickFringe(): void {
     this.onlyShowFringe = !this.onlyShowFringe;
+  }
+
+  countVegetables(): void {
+    if (this.foodItem && this.allBaseItems) {
+      if (this.foodItem.base_food_items.length === 0) {
+        this.foodItem.vegetable_count = this.foodItem.food_category === 'Vegetables' ? 1 : 0;
+      } else {
+        this.foodItem.vegetable_count = this.allBaseItems.filter(base =>
+          base.base_food_items.length === 0 && base.food_category === 'Vegetables'
+        ).length
+      }
+    }
   }
 
 }

@@ -100,7 +100,7 @@
           <div class="field-body">
             <div class="field">
               <div class="chip-list">
-                <app-food-item-chip *ngFor="let base of bases" [foodItem]="base" (removeItem)="removeBase($event)"></app-food-item-chip>
+                <app-food-item-chip *ngFor="let base of bases" [foodItem]="base" [color]="'pink'" (removeItem)="removeBase($event)"></app-food-item-chip>
               </div>
 
             </div>
