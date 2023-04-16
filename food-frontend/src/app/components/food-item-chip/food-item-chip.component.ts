@@ -31,7 +31,8 @@ export class FoodItemChipComponent implements OnInit {
   }
 
   goToFoodItemPage() {
-    this.router.navigate([`food-item/${this.foodItem.id}`]);
+    // this.router.navigate([`food-item/${this.foodItem.id}`]);
+    window.open(`food-item/${this.foodItem.id}`, "_blank");
   }
 
 }

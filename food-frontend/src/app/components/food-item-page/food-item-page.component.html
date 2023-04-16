@@ -33,16 +33,18 @@
             <app-food-item-chip *ngIf="!onlyShowFringe || base.base_food_items.length === 0"
                                 [foodItem]="base" [color]="'green'"></app-food-item-chip>
           </ng-container>
-<!--          <app-food-item-chip *ngFor="let base of allBaseItems" [foodItem]="base" [color]="'green'"></app-food-item-chip>-->
         </div>
         <div class="chip-list">
-          <h4 class="title is-4">Extensions</h4>
+          <div class="side-by-side">
+            <h4 class="title is-4">Extensions</h4>
+            <p style="padding: 0 10px; margin-top: 3px;">(<a (click)="openExtensionsInTabs()">open all</a>)</p>
+          </div>
+
           <div *ngIf="allExtensionItems?.length === 0">This food item has no extensions.</div>
           <ng-container *ngFor="let extension of allExtensionItems">
             <app-food-item-chip *ngIf="!onlyShowFringe || extension.extension_food_items.length === 0"
                                 [foodItem]="extension" [color]="'dark-green'"></app-food-item-chip>
           </ng-container>
-<!--          <app-food-item-chip *ngFor="let extension of allExtensionItems" [foodItem]="extension" [color]="'pink'"></app-food-item-chip>-->
         </div>
       </div>
     </div>

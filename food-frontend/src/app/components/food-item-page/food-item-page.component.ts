@@ -70,4 +70,14 @@ export class FoodItemPageComponent implements OnInit {
     }
   }
 
+  openExtensionsInTabs(): void {
+    if (this.allExtensionItems) {
+      this.allExtensionItems.forEach(item => {
+        if (!this.onlyShowFringe || item.extension_food_items.length === 0) {
+          window.open(`food-item/${item.id}`, "_blank");
+        }
+      })
+    }
+  }
+
 }
