@@ -1,0 +1,10 @@
+.side-by-side {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.chip-list {
+  display: flex;
+  flex-direction: column;
+}

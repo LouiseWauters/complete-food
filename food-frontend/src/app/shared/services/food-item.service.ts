@@ -30,6 +30,10 @@ export class FoodItemService {
     return this.http.get<FoodItem[]>(`${API_URL}/food-items/${foodItemId}/all-bases`);
   }
 
+  getAllFoodItemExtensions(foodItemId: number): Observable<FoodItem[]> {
+    return this.http.get<FoodItem[]>(`${API_URL}/food-items/${foodItemId}/all-extensions`);
+  }
+
   createFoodItem(newFoodItem: FoodItem) {
     const httpOptions = {
       headers: new HttpHeaders({

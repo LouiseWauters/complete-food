@@ -4,7 +4,7 @@ from src.entities.entity import Session
 from src.entities.food_item import FoodItem, FoodItemSchema
 from src.relations.food_item_extension import FoodItemExtension, FoodItemExtensionSchema
 from src.utils.food_item_utils import handle_food_item_crud, check_food_item_values, get_posted_food_item, \
-    get_all_base_food_items
+    get_all_base_food_items, get_all_extension_food_items
 from src.utils.utils import update_attribute, check_required, get_all, get_by_id, get_by_ids, check_existence
 from src.utils.exceptions import CircularDependencyError
 food_item_blueprint = Blueprint("food_item_blueprint", __name__)
@@ -26,6 +26,16 @@ def get_all_food_item_bases(food_item_id):
     bases = get_by_ids(FoodItem, FoodItemSchema, base_item_ids)
     # Serializing as JSON
     return jsonify(bases), 200
+
+
+@food_item_blueprint.route("/food-items/<int:food_item_id>/all-extensions")
+@handle_food_item_crud
+def get_all_food_item_extensions(food_item_id):
+    food_item = get_by_id(FoodItem, FoodItemSchema, food_item_id)
+    extension_item_ids = get_all_extension_food_items(food_item)
+    extensions = get_by_ids(FoodItem, FoodItemSchema, extension_item_ids)
+    # Serializing as JSON
+    return jsonify(extensions), 200
 
 @food_item_blueprint.route("/food-items/<int:food_item_id>")
 @handle_food_item_crud

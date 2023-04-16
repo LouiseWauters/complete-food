@@ -11,6 +11,7 @@ export class FoodItemChipComponent implements OnInit {
 
   @Input() foodItem!: FoodItem;
   @Output() removeItem = new EventEmitter<string>();
+  @Input() color: string = 'blue';
 
   constructor(
     private router: Router

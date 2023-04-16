@@ -1,4 +1,4 @@
-<div class="chip chip-link" (click)="goToFoodItemPage()">
+<div class="chip-link chip" [ngClass]="'is-' + [color]" (click)="goToFoodItemPage()">
   <div class="chip-content">{{foodItem.name}}</div>
   <div class="chip-close">
     <button class="delete" type="button" (click)="remove()"></button>

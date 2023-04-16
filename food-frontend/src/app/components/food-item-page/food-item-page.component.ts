@@ -11,7 +11,9 @@ import {FoodItem} from "../../shared/models/food-item";
 export class FoodItemPageComponent implements OnInit {
 
   foodItem: FoodItem | null = null;
-  allBaseItems: FoodItem[] | null = null; // TODO change to extensions!
+  allBaseItems: FoodItem[] | null = null;
+  allExtensionItems: FoodItem[] | null = null;
+  ready: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -20,9 +22,14 @@ export class FoodItemPageComponent implements OnInit {
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.allBaseItems = null;
-        this.foodItem = null;
-        this.ngOnInit();
+        const foodItemId = this.route.snapshot.paramMap.get('id');
+        if (foodItemId && this.foodItem && +foodItemId !== this.foodItem.id) {
+          this.allExtensionItems = null;
+          this.allBaseItems = null;
+          this.foodItem = null;
+          this.ready = false;
+          this.ngOnInit();
+        }
       }
     })
   }
@@ -34,6 +41,10 @@ export class FoodItemPageComponent implements OnInit {
         this.foodItem = data;
         this.foodItemApi.getAllFoodItemBases(this.foodItem.id).subscribe(bases => {
           this.allBaseItems = bases;
+          this.foodItemApi.getAllFoodItemExtensions(+foodItemId).subscribe(extensions => {
+            this.allExtensionItems = extensions;
+            this.ready = true;
+          })
         });
       }, error => this.router.navigate(['']));
     } else {

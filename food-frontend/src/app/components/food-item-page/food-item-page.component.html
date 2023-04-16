@@ -1,7 +1,24 @@
 <div class="section">
   <div class="container">
-    <h1 class="title">{{foodItem?.name}}</h1>
-    <br>
-    <app-food-item-chip *ngFor="let base of allBaseItems" [foodItem]="base"></app-food-item-chip>
+    <div *ngIf="ready; else notReady">
+      <h1 class="title">{{foodItem?.name}}</h1>
+      <br>
+      <div class="side-by-side">
+        <div class="chip-list">
+          <h4 class="title is-4">Bases</h4>
+          <div *ngIf="allBaseItems?.length === 0">This food item has no bases.</div>
+          <app-food-item-chip *ngFor="let base of allBaseItems" [foodItem]="base" [color]="'green'"></app-food-item-chip>
+        </div>
+        <div class="chip-list">
+          <h4 class="title is-4">Extensions</h4>
+          <div *ngIf="allExtensionItems?.length === 0">This food item has no extensions.</div>
+          <app-food-item-chip *ngFor="let extension of allExtensionItems" [foodItem]="extension" [color]="'pink'"></app-food-item-chip>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #notReady>
+      <app-load-spinner></app-load-spinner>
+    </ng-template>
   </div>
 </div>
