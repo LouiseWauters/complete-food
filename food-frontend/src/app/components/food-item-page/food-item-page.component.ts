@@ -62,10 +62,15 @@ export class FoodItemPageComponent implements OnInit {
     if (this.foodItem && this.allBaseItems) {
       if (this.foodItem.base_food_items.length === 0) {
         this.foodItem.vegetable_count = this.foodItem.food_category === 'Vegetables' ? 1 : 0;
+        this.foodItem.fruit_count = this.foodItem.food_category === 'Fruits' ? 1 : 0;
+        this.foodItem.legume_count = this.foodItem.food_category === 'Legumes' ? 1 : 0;
       } else {
         this.foodItem.vegetable_count = this.allBaseItems.filter(base =>
-          base.base_food_items.length === 0 && base.food_category === 'Vegetables'
-        ).length
+          base.base_food_items.length === 0 && base.food_category === 'Vegetables').length
+        this.foodItem.fruit_count = this.allBaseItems.filter(base =>
+          base.base_food_items.length === 0 && base.food_category === 'Fruits').length
+        this.foodItem.legume_count = this.allBaseItems.filter(base =>
+          base.base_food_items.length === 0 && base.food_category === 'Legumes').length
       }
     }
   }

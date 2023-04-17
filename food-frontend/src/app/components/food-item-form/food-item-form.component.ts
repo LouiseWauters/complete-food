@@ -79,14 +79,19 @@ export class FoodItemFormComponent implements OnInit {
           next: data => {
             this.successMessage = this.createSuccessMessage(data);
             // Reset form to be empty, excluding default value for is_vegetable
-            this.form.reset({'is_full_meal': false});
-            this.form.reset({'is_wfd': false});
-            this.form.reset({'is_health_rotation': false});
+            this.form.reset({
+              'is_full_meal': false,
+              'is_wfd': false,
+              'is_health_rotation': false
+            })
             // Put cursor back in first input field of the form
             document.getElementById(`${this.className}Form`)?.firstElementChild?.getElementsByTagName("input")[0].focus();
             // Add newly created ingredient to our list of ingredients
             this.foodItems?.push(data);
             this.sortFoodItems();
+            // Reset season buttons
+            this.unselectAllMonths();
+            // Make api calls for food extensions
             this.bases.forEach(base => this.foodItemApi.addBase(data, base).subscribe(data => console.log("gelukt!", data), error => this.errorMessage = 'Could not link base.'));
             this.bases = [];
           },
@@ -160,6 +165,15 @@ export class FoodItemFormComponent implements OnInit {
     }
   }
 
+  unselectAllMonths() : void {
+    const elems = document.getElementById("seasonButtons")?.getElementsByTagName("button");
+    if (elems) {
+      for (let i = 0; i < elems.length; i++) {
+        elems[i].classList.remove('is-primary');
+      }
+    }
+  }
+
   selectAllMonths() : void {
     const elems = document.getElementById("seasonButtons")?.getElementsByTagName("button");
     if (elems) {
@@ -179,7 +193,6 @@ export class FoodItemFormComponent implements OnInit {
         }
       }
     }
-    console.log(monthIndices)
     return MONTHS.filter(month => monthIndices.includes(month.index));
   }
 
@@ -187,8 +200,6 @@ export class FoodItemFormComponent implements OnInit {
     // const monthIndices = months.map(month => month.index);
     // let season = 0;
     // monthIndices.forEach(i => season += (1 << i));
-    console.log(months);
-    console.log(months.map(month => month.index))
     return months.map(month => month.index).reduce((season, index) => season + (1 << index), 0);
   }
 

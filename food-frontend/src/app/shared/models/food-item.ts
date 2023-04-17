@@ -13,4 +13,8 @@ export interface FoodItem {
   base_food_items: number[];
   extension_food_items: number[];
   vegetable_count?: number;
+  legume_count?: number;
+  fruit_count?: number;
+  all_bases?: FoodItem[];
+  all_extensions?: FoodItem[];
 }

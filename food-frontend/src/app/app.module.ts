@@ -10,6 +10,7 @@ import { LoadSpinnerComponent } from './components/load-spinner/load-spinner.com
 import {FoodItemFormComponent} from "./components/food-item-form/food-item-form.component";
 import { FoodItemChipComponent } from './components/food-item-chip/food-item-chip.component';
 import { FoodItemPageComponent } from './components/food-item-page/food-item-page.component';
+import { SearchFoodComponent } from './components/search-food/search-food.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { FoodItemPageComponent } from './components/food-item-page/food-item-pag
     LoadSpinnerComponent,
     FoodItemFormComponent,
     FoodItemChipComponent,
-    FoodItemPageComponent
+    FoodItemPageComponent,
+    SearchFoodComponent
   ],
     imports: [
         BrowserModule,
