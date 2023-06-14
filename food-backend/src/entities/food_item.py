@@ -49,3 +49,4 @@ class FoodItemSchema(Schema):
     food_category = fields.Pluck(FoodCategorySchema, 'name')
     base_food_items = fields.Pluck(FoodItemExtensionSchema, 'base_food_id', many=True)
     extension_food_items = fields.Pluck(FoodItemExtensionSchema, 'extension_food_id', many=True)
+    recipes = fields.Pluck('RecipeSchema', 'id', many=True)
